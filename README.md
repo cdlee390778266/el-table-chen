@@ -8,13 +8,13 @@
 
 - 2.  安装 ElTableChen
       ```shell
-      npm install element-ui -S
+      npm i el-table-chen -S
       ```
 
 ## 注册
 
 ```javascript
-import ElTableChen from "./libs/el-table-chen.js";
+import ElTableChen from "el-table-chen";
 Vue.use(ElTableChen);
 ```
 
