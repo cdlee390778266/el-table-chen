@@ -1,7 +1,7 @@
 {
   "name": "el-table-chen",
-  "version": "1.0.5",
-  "description": "element-ui 表格分页组件封装",
+  "version": "1.0.6",
+  "description": "element-ui 表格分页组件封装 高度自适应 卡片表格切换",
   "author": "",
   "private": false,
   "main": "src/libs/el-table-chen.js",
