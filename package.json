@@ -5,6 +5,10 @@
   "author": "",
   "private": false,
   "main": "src/libs/el-table-chen.js",
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/cdlee390778266/el-table-chen"
+},
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
