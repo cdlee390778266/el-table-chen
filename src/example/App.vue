@@ -81,6 +81,9 @@
           {{ scope.row.keepAlive ? "在线" : "离线" }}
         </div>
       </template>
+      <!-- <template #card="{ scope }">
+        <div>卡片自定义模板</div>
+      </template> -->
       <template #handle>
         <div>
           <el-button type="text">查看</el-button>
@@ -128,6 +131,10 @@ export default {
         tableConfig: {
           // 同el-table表格属性配置https://element.eleme.cn/#/zh-CN/component/table#table-attributes
           size: "mini",
+        },
+        cardConfig: {
+          // 卡片配置
+          slotName: "", // 卡片插槽名
         },
         columnsConfig: [
           // 表格列配置，同el-table-column配置https://element.eleme.cn/#/zh-CN/component/table#table-attributes；增加slotName属性，如果存在，则优先使用插槽名为slotName属性值的数据
