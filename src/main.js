@@ -5,7 +5,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './example/App.vue';
 
-import ElTableChen from "./libs/el-table-chen.js";
+import ElTableChen from "../lib/el-table-chen.min.js";
 
 Vue.use(ElementUI);
 Vue.use(ElTableChen)

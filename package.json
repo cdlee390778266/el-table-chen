@@ -2,9 +2,11 @@
   "name": "el-table-chen",
   "version": "1.0.6",
   "description": "element-ui 表格分页组件封装 高度自适应 卡片表格切换",
-  "author": "",
+  "keywords": ["element-ui", "el-table", "el-pagination", "el-card", "el-table-chen"],
+  "author": "cdlee390778266",
   "private": false,
-  "main": "src/libs/el-table-chen.js",
+  "main": "lib/el-table-chen.min.js",
+  "files": ["lib", "src"],
   "repository": {
     "type": "git",
     "url": "https://github.com/cdlee390778266/el-table-chen"
@@ -12,7 +14,7 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "build": "node build/build.js"
+    "build": "webpack --config build/build.js"
   },
   "dependencies": {
     "element-ui": "^2.15.1",
