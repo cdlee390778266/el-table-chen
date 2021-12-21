@@ -1,8 +1,8 @@
 {
   "name": "el-table-chen",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "element-ui 表格分页组件封装 高度自适应 卡片表格切换",
-  "keywords": ["element-ui", "el-table", "el-pagination", "el-card", "el-table-chen"],
+  "keywords": ["vue", "ui", "table", "自适应", "配置化", "element-ui", "el-table", "el-pagination", "el-card", "el-table-chen"],
   "author": "cdlee390778266",
   "private": false,
   "main": "lib/el-table-chen.min.js",
