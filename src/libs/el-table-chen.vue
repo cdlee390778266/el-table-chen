@@ -190,6 +190,10 @@ export default {
       type: Function,
       default: null,
     },
+    responseFn: {
+      type: Function,
+      default: null,
+    },
     tableData: {
       // 数据
       type: Array,
@@ -247,7 +251,7 @@ export default {
     containerId: {
       // 组件容器id
       type: String,
-      default: "#app",
+      default: "",
     },
     autoHeight: {
       // 自适应高度
@@ -366,7 +370,6 @@ export default {
   created() {
     this.pager.pageSizes = this.pageSizes;
     this.pager.defaultPageSize = this.pager.pageSizes[0];
-    console.log(666, this.pager);
   },
   mounted() {
     if (this.apiFn && this.autoGetData) {
@@ -401,10 +404,7 @@ export default {
           }
         });
       } else {
-        data = {};
-        for (let key in query) {
-          data[key] = encodeURI(query[key]);
-        }
+        data = query || {};
       }
       return data;
     },
@@ -430,20 +430,29 @@ export default {
         this.apiFn(query)
           .then((res) => {
             this.isLoading = false;
-            if (res && res.data && Array.isArray(res.data)) {
-              this.dataSource = res.data || [];
-              this.total = this.dataSource.length;
-            } else {
-              this.dataSource =
-                res && res.data && res.data.list ? res.data.list : [];
-              this.total = res.data.totalCount;
-            }
+            let responseFn =
+              this.responseFn && typeof this.responseFn == "function"
+                ? this.responseFn
+                : this.$elTableChen.responseFn &&
+                  typeof this.$elTableChen.responseFn == "function"
+                ? this.$elTableChen.responseFn
+                : this.defaultResponseFn;
+            responseFn.call(this, res);
             this.setChekedSelection();
             this.finishCallBack(this.dataSource);
           })
           .catch(() => {
             this.isLoading = false;
           });
+      }
+    },
+    defaultResponseFn(res) {
+      if (res && res.data && Array.isArray(res.data)) {
+        this.dataSource = res.data || [];
+        this.total = this.dataSource.length;
+      } else {
+        this.dataSource = res && res.data && res.data.list ? res.data.list : [];
+        this.total = res.data.totalCount;
       }
     },
     // 前端分页
@@ -551,11 +560,15 @@ export default {
     },
     // 设置表格最大高度
     setMaxHeight() {
+      let containerId = this.containerId || this.$elTableChen.containerId;
+      if (!containerId || !document.getElementById(containerId)) return;
+
       let minusSelectors = [".header"];
       if (this.pagination) minusSelectors.push("el-pagination");
       this.maxHeight = this.getTableMaxHeight(
         minusSelectors,
-        this.offsetHeight
+        this.offsetHeight,
+        `#${containerId}`
       );
     },
     // 拿到表格的高度和最高高度 高度===最高高度

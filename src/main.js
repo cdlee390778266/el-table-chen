@@ -8,7 +8,18 @@ import App from './example/App.vue';
 import ElTableChen from "../lib/el-table-chen.min.js";
 
 Vue.use(ElementUI);
-Vue.use(ElTableChen)
+Vue.use(ElTableChen, {
+  containerId: 'app', // 全局配置容器id
+  responseFn: function (res) { // 全局ajax请求成功后的回调函数，可不配置
+    if (res && res.data && Array.isArray(res.data)) {
+      this.dataSource = res.data || [];
+      this.total = this.dataSource.length;
+    } else {
+      this.dataSource = res && res.data && res.data.list ? res.data.list : [];
+      this.total = res.data.totalCount;
+    }
+  }
+})
 
 Vue.config.productionTip = false
 

@@ -2,11 +2,25 @@
   "name": "el-table-chen",
   "version": "1.0.8",
   "description": "element-ui 表格分页组件封装 高度自适应 卡片表格切换",
-  "keywords": ["vue", "ui", "table", "自适应", "配置化", "element-ui", "el-table", "el-pagination", "el-card", "el-table-chen"],
+  "keywords": [
+    "vue",
+    "ui",
+    "table",
+    "自适应",
+    "配置化",
+    "element-ui",
+    "el-table",
+    "el-pagination",
+    "el-card",
+    "el-table-chen"
+  ],
   "author": "cdlee390778266",
   "private": false,
   "main": "lib/el-table-chen.min.js",
-  "files": ["lib", "src"],
+  "files": [
+    "lib",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/cdlee390778266/el-table-chen"
@@ -17,7 +31,7 @@
     "build": "webpack --config build/build.js"
   },
   "dependencies": {
-    "element-ui": "^2.15.1",
+    "element-ui": "^2.15.6",
     "es2015": "^0.0.0",
     "file-saver": "^2.0.2",
     "less": "^3.10.3",

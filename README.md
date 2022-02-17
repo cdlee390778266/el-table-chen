@@ -15,7 +15,19 @@
 
 ```javascript
 import ElTableChen from "el-table-chen";
-Vue.use(ElTableChen);
+Vue.use(ElTableChen, {
+  containerId: "app", // 全局配置容器id
+  responseFn: function(res) {
+    // 全局ajax请求成功后的回调函数，可不配置
+    if (res && res.data && Array.isArray(res.data)) {
+      this.dataSource = res.data || [];
+      this.total = this.dataSource.length;
+    } else {
+      this.dataSource = res && res.data && res.data.list ? res.data.list : [];
+      this.total = res.data.totalCount;
+    }
+  }
+});
 ```
 
 ## 效果图
@@ -146,15 +158,26 @@ export default {
           console.log(query);
           return new Promise((resolve, reject) => {
             setTimeout(() => {
-              // 返回数据固定为以下两种数据结构
+              // 返回数据默认为以下两种数据结构
               let data = { data: { list: tableData, totalCount: 1000 } };
               // let data = { data: tableData };
               resolve(data);
             }, 1000);
           });
         },
+        responseFn: function (res) {
+          // ajax请求成功后的回调函数,如果没有配置则用全局的回调或则默认的回调
+          if (res && res.data && Array.isArray(res.data)) {
+            this.dataSource = res.data || [];
+            this.total = this.dataSource.length;
+          } else {
+            this.dataSource =
+              res && res.data && res.data.list ? res.data.list : [];
+            this.total = res.data.totalCount;
+          }
+        },
         type: "table", //card(卡片) or table(表格)
-        containerId: "#app", // 组件容器id
+        containerId: "app", // 组件容器id
         toggleConfig: {
           //切换配置
           show: true, //是否显示
