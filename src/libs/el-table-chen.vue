@@ -91,6 +91,7 @@
         :gutter="20"
         :style="`height: ${noDefaultHeight ? 'auto' : maxHeight + 'px'}`"
       >
+      <template v-if="dataSource.length">
         <el-col
           :xs="24"
           :sm="12"
@@ -148,6 +149,18 @@
             ></i>
           </div>
         </el-col>
+        </template>
+        <template v-else>
+          <el-col :span="24" v-if="cardConfig.emptySlotName">
+            <slot
+              :name="handleConfig.slotName"
+              :scope="{ row: item }"
+            ></slot>
+          </el-col>
+          <el-col :span="24" v-else class="card-empty">
+            没有数据
+          </el-col>
+        </template>
       </el-row>
     </div>
     <div class="pagination-wrapper" v-if="pagination">
@@ -288,7 +301,8 @@ export default {
       type: Object,
       default: () => ({
         slotName: "", // 插槽名字
-      }),
+        emptySlotName: ""
+      })
     },
     finishCallBack: {
       // 获取数据完成后的回调
@@ -740,6 +754,12 @@ export default {
     right: 3px;
     font-size: 40;
     color: #67c23a;
+  }
+  .card-empty {
+    line-height: 200px;
+    text-align: center;
+    color: #999;
+    font-size: 16px;
   }
 }
 .el-tooltip__popper {
