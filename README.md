@@ -192,7 +192,15 @@ export default {
         cardConfig: {
           // 卡片配置
           slotName: "", // 卡片插槽名
+          grid: {
+            // 卡片自适应布局配置
+            xs: 24,
+            sm: 12,
+            md: 12,
+            lg: 8,
+          }
         },
+        emptySlotName: "", // 没有数据插槽名
         columnsConfig: [
           // 表格列配置，同el-table-column配置https://element.eleme.cn/#/zh-CN/component/table#table-attributes；增加slotName属性，如果存在，则优先使用插槽名为slotName属性值的数据
           {

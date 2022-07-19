@@ -83,6 +83,12 @@
             </div>
           </template>
         </el-table-column>
+        <template slot="empty">
+          <div>
+            <slot v-if="emptySlotName" :name="emptySlotName" />
+            <el-empty v-else description="暂无数据"></el-empty>
+          </div>
+        </template>
       </el-table>
       <!-- 卡片布局 -->
       <el-row
@@ -91,74 +97,71 @@
         :gutter="20"
         :style="`height: ${noDefaultHeight ? 'auto' : maxHeight + 'px'}`"
       >
-      <template v-if="dataSource.length">
-        <el-col
-          :xs="24"
-          :sm="12"
-          :md="12"
-          :lg="8"
-          v-for="(item, index) in dataSource"
-          :key="index"
-        >
-          <div class="card-main" @click="selectionCardChange(item)">
-            <slot
-              v-if="cardConfig && cardConfig.slotName"
-              :name="cardConfig.slotName"
-              :scope="{ row: item }"
-            ></slot>
-            <el-card v-else style="width: 100%">
-              <div class="dflex">
-                <div class="flex ellipsis">
-                  <h4 class="ellipsis">
-                    <span :title="item.name">{{ item.name }}</span>
-                  </h4>
-                  <div
-                    v-for="(column, index) in cardColumnsConfig"
-                    :key="index"
-                  >
-                    <div v-if="column.slotName">
-                      <div class="dflex ellipsis">
-                        <strong>{{ column.label }}：</strong>
-                        <div class="flex ellipsis">
-                          <slot
-                            :name="column.slotName"
-                            :scope="{ row: item }"
-                          ></slot>
+        <template v-if="dataSource.length">
+          <el-col
+            v-bind="cardConfig.grid || defaultCardGrid"
+            v-for="(item, index) in dataSource"
+            :key="index"
+          >
+            <div class="card-main" @click="selectionCardChange(item)">
+              <slot
+                v-if="cardConfig && cardConfig.slotName"
+                :name="cardConfig.slotName"
+                :scope="{ row: item }"
+              ></slot>
+              <el-card v-else style="width: 100%">
+                <div class="dflex">
+                  <div class="flex ellipsis">
+                    <h4 class="ellipsis">
+                      <span :title="item.name">{{ item.name }}</span>
+                    </h4>
+                    <div
+                      v-for="(column, index) in cardColumnsConfig"
+                      :key="index"
+                    >
+                      <div v-if="column.slotName">
+                        <div class="dflex ellipsis">
+                          <strong>{{ column.label }}：</strong>
+                          <div class="flex ellipsis">
+                            <slot
+                              :name="column.slotName"
+                              :scope="{ row: item }"
+                            ></slot>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="dflex ellipsis" v-else>
-                      <strong>{{ column.label }}：</strong>
-                      <span class="flex ellipsis" :title="item[column.prop]">{{
-                        item[column.prop]
-                      }}</span>
+                      <div class="dflex ellipsis" v-else>
+                        <strong>{{ column.label }}：</strong>
+                        <span
+                          class="flex ellipsis"
+                          :title="item[column.prop]"
+                          >{{ item[column.prop] }}</span
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="handle" v-if="handleConfig" @click.stop>
-                <slot
-                  :name="handleConfig.slotName"
-                  :scope="{ row: item }"
-                ></slot>
-              </div>
-            </el-card>
-            <i
-              class="el-icon-check el-icon-success"
-              v-if="multipleSelection.includes(item)"
-            ></i>
-          </div>
-        </el-col>
+                <div class="handle" v-if="handleConfig" @click.stop>
+                  <slot
+                    :name="handleConfig.slotName"
+                    :scope="{ row: item }"
+                  ></slot>
+                </div>
+              </el-card>
+              <i
+                class="el-icon-check el-icon-success"
+                v-if="multipleSelection.includes(item)"
+              ></i>
+            </div>
+          </el-col>
         </template>
         <template v-else>
           <el-col :span="24" v-if="cardConfig.emptySlotName">
-            <slot
-              :name="handleConfig.slotName"
-              :scope="{ row: item }"
-            ></slot>
+            <slot :name="handleConfig.slotName" :scope="{ row: item }"></slot>
           </el-col>
-          <el-col :span="24" v-else class="card-empty">
-            没有数据
+          <el-col :span="24" v-else>
+            <slot v-if="emptySlotName" :name="emptySlotName" />
+            <el-empty v-else description="暂无数据"></el-empty>
           </el-col>
         </template>
       </el-row>
@@ -301,13 +304,24 @@ export default {
       type: Object,
       default: () => ({
         slotName: "", // 插槽名字
-        emptySlotName: ""
-      })
+        emptySlotName: "",
+        grid: {
+          xs: 24,
+          sm: 12,
+          md: 12,
+          lg: 8,
+        },
+      }),
     },
     finishCallBack: {
       // 获取数据完成后的回调
       type: Function,
       default: () => {},
+    },
+    emptySlotName: {
+      // 没有数据插槽名
+      type: String,
+      default: "",
     },
   },
   data() {
@@ -324,6 +338,12 @@ export default {
         currentPage: 1,
       },
       handleConfig: null,
+      defaultCardGrid: {
+        xs: 24,
+        sm: 12,
+        md: 12,
+        lg: 8,
+      },
     };
   },
   watch: {
