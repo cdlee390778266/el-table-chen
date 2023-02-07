@@ -26,6 +26,8 @@ Vue.use(ElTableChen, {
       this.dataSource = res && res.data && res.data.list ? res.data.list : [];
       this.total = res.data.totalCount;
     }
+    // 如果数据为空并且当前页码大于1,则页码减一重新获取数据
+    this.againGetData();
   }
 });
 ```
@@ -175,6 +177,8 @@ export default {
               res && res.data && res.data.list ? res.data.list : [];
             this.total = res.data.totalCount;
           }
+          // 如果数据为空并且当前页码大于1,则页码减一重新获取数据
+          this.againGetData();
         },
         type: "table", //card(卡片) or table(表格)
         containerId: "app", // 组件容器id
@@ -295,6 +299,8 @@ export default {
         single: true, // 单选
         pagination: true, // 分页
         pageSizes: [10, 20, 50, 70, 100], // 分页配置
+        defaultPageSize: 10, // 默认分页大小
+        pageLayout: "total, sizes, prev, pager, next, jumper", // 分页布局
         currentRow: true, // 当前行高亮
         noDefaultHeight: false, // 是否没有默认高度
         minHeight: 200, // 表格最小高度

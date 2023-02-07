@@ -169,7 +169,7 @@
     <div class="pagination-wrapper" v-if="pagination">
       <el-pagination
         background
-        layout="total, sizes, prev, pager, next, jumper"
+        :layout="pageLayout"
         :page-sizes="pager.pageSizes"
         :page-size.sync="pager.defaultPageSize"
         :current-page.sync="pager.currentPage"
@@ -264,6 +264,16 @@ export default {
       type: Array,
       default: () => [10, 20, 50],
     },
+    defaultPageSize: {
+      // 默认分页大小
+      type: Number,
+      default: 10,
+    },
+    pageLayout: {
+      // 分页布局
+      type: String,
+      default: "total, sizes, prev, pager, next, jumper",
+    },
     containerId: {
       // 组件容器id
       type: String,
@@ -334,7 +344,7 @@ export default {
       total: 0,
       pager: {
         pageSizes: [10, 20, 50],
-        defaultPageSize: 20,
+        defaultPageSize: 10,
         currentPage: 1,
       },
       handleConfig: null,
@@ -403,7 +413,7 @@ export default {
   },
   created() {
     this.pager.pageSizes = this.pageSizes;
-    this.pager.defaultPageSize = this.pager.pageSizes[0];
+    this.pager.defaultPageSize = this.defaultPageSize;
   },
   mounted() {
     if (this.apiFn && this.autoGetData) {
@@ -487,6 +497,14 @@ export default {
       } else {
         this.dataSource = res && res.data && res.data.list ? res.data.list : [];
         this.total = res.data.totalCount;
+      }
+      this.againGetData();
+    },
+    // 如果数据为空并且当前页码大于1,则页码减一重新获取数据
+    againGetData() {
+      if (!this.dataSource.length && this.pager.currentPage > 1) {
+        this.pager.currentPage = this.pager.currentPage - 1;
+        this.getData();
       }
     },
     // 前端分页

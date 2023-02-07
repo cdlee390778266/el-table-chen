@@ -19,6 +19,8 @@ Vue.use(ElTableChen, {
       this.dataSource = res && res.data && res.data.list ? res.data.list : [];
       this.total = res.data.totalCount;
     }
+    // 如果数据为空并且当前页码大于1,则页码减一重新获取数据
+    this.againGetData();
   }
 })
 
