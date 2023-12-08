@@ -483,7 +483,7 @@ export default {
                 : this.defaultResponseFn;
             responseFn.call(this, res);
             this.setChekedSelection();
-            this.finishCallBack(this.dataSource);
+            this.finishCallBack(this.dataSource, res);
           })
           .catch(() => {
             this.isLoading = false;
